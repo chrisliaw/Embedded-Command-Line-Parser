@@ -1,16 +1,16 @@
 
 
 class CmdlineParser
-  attr_accessor :choices, :params
+  attr_accessor :choices, :params, :missing_mandatory
   
-  VERSION = "0.1.0"
+  VERSION = "0.1.1"
   
   def initialize(opt = {})
     @choices = []
     @short_map = {}
     @long_map = {}
     @params = []
-    @mandatory_choice = {}
+    @missing_mandatory = {}
     @search = {}
     @error_as_message = opt[:error_as_message]
     @error_as_message ||= false 
@@ -54,8 +54,8 @@ class CmdlineParser
           end
         end
         
-        if @mandatory_choice.keys.include? opt.name
-          @mandatory_choice.delete(opt.name)
+        if @missing_mandatory.keys.include? opt.name
+          @missing_mandatory.delete(opt.name)
         end
         
       elsif @long_map.keys.include? token
@@ -83,8 +83,8 @@ class CmdlineParser
           end
         end
         
-        if @mandatory_choice.keys.include? opt.name
-          @mandatory_choice.delete(opt.name)
+        if @missing_mandatory.keys.include? opt.name
+          @missing_mandatory.delete(opt.name)
         end
         
       else
@@ -94,9 +94,9 @@ class CmdlineParser
       end
     end
     
-    if @mandatory_choice.length > 0
+    if @missing_mandatory.length > 0
       msg = []
-      @mandatory_choice.values.each do |ch|
+      @missing_mandatory.values.each do |ch|
         msg << "#{ch.short} or #{ch.long}"
       end
       
@@ -149,7 +149,7 @@ class CmdlineParser
       @short_map[ch.short] = ch
       @long_map[ch.long] = ch
       if ch.mandatory == true
-        @mandatory_choice[ch.name] = ch
+        @missing_mandatory[ch.name] = ch
       end
     end
   end

@@ -1,0 +1,12 @@
+
+
+
+
+V0.1.1 (19th August 2009)
+[Added]		Attributes of missing_mandatory to allow client to query for which flag is missing
+[Added]		Sample usage in the README.txt
+[Edited]	Change the license from GPL to LGPL
+
+V0.1.0 (18th August 2009)
+* Initial release
+
